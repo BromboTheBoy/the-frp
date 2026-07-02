@@ -1095,13 +1095,65 @@
     .track-desc, .track-badge { display: none; }
     .cta-actions { align-items: flex-start; }
     section { padding: 4rem 1.5rem; }
+
+    /* NAV — hide links, show hamburger */
+    .nav-links { display: none; flex-direction: column; position: fixed;
+      top: 60px; left: 0; right: 0; background: rgba(0,14,9,0.98);
+      padding: 1.5rem 2rem 2rem; gap: 1.25rem; z-index: 99;
+      border-bottom: 1px solid rgba(200,168,75,0.15); }
+    .nav-links.open { display: flex; }
+    .nav-hamburger { display: flex; flex-direction: column; gap: 5px;
+      cursor: pointer; padding: 4px; background: none; border: none; }
+    .nav-hamburger span { display: block; width: 22px; height: 2px;
+      background: var(--chalk-dim); transition: all 0.2s; }
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* inline grids that use style="" — force single column */
+    .ecosystem-inner > div[style*="grid-template-columns"],
+    div[style*="grid-template-columns:1fr 1fr"],
+    div[style*="grid-template-columns:1fr 1.8fr"],
+    div[style*="grid-template-columns:1fr 1.5fr"],
+    div[style*="grid-template-columns:1fr 2fr"],
+    div[style*="grid-template-columns:repeat(3"],
+    div[style*="grid-template-columns:repeat(4"],
+    div[style*="grid-template-columns:repeat(5"] {
+      grid-template-columns: 1fr !important;
+      gap: 1rem !important;
+    }
+
+    /* traction / scale / founder section inline grids */
+    div[style*="display:grid"] { grid-template-columns: 1fr !important; }
+
+    /* urgency block */
+    .urgency-block { grid-template-columns: 1fr 1fr; }
+    .urgency-stat { border-right: none; border-bottom: 1px solid rgba(200,168,75,0.1); }
+
+    /* phases timeline */
+    .phases-timeline::before { display: none; }
+    .phase { grid-template-columns: 1fr; }
+    .phase-marker { flex-direction: row; writing-mode: horizontal-tb; }
+    .phase-period { writing-mode: horizontal-tb; transform: none; font-size: 0.65rem; }
+
+    /* footer */
+    .footer-inner { grid-template-columns: 1fr !important; }
+
+    /* hero */
+    .hero { padding: 3rem 1.5rem; }
+    .hero-actions { flex-direction: column; }
+    .btn-primary, .btn-ghost { width: 100%; text-align: center; }
   }
 
   @media (max-width: 480px) {
-    .hero-headline { font-size: 3rem; }
-    .urgency-block { grid-template-columns: 1fr 1fr; }
+    .hero-headline { font-size: clamp(2.8rem, 14vw, 4rem); }
+    .urgency-block { grid-template-columns: 1fr; }
     .urgency-stat { border-right: none; border-bottom: 1px solid rgba(200,168,75,0.1); }
+    .nav-logo { font-size: 0.85rem; }
   }
+
+  /* hide hamburger on desktop */
+  .nav-hamburger { display: none; }
 
   /* LIVE COUNTER */
   #age-counter {
@@ -1121,7 +1173,7 @@
     <a href="#" class="nav-logo">The Football Reclamation Project</a>
     <div style="font-family:var(--type-mono); font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--chalk-dim);">By Chendeleza Africa</div>
   </div>
-  <ul class="nav-links">
+  <ul class="nav-links" id="navLinks">
     <li><a href="#about">The Problem</a></li>
     <li><a href="#traction">Traction</a></li>
     <li><a href="#tracks">Tracks</a></li>
@@ -1130,6 +1182,9 @@
     <li><a href="#ecosystem">Index</a></li>
     <li><a href="#join" class="nav-cta">Get Involved</a></li>
   </ul>
+  <button class="nav-hamburger" id="hamburger" aria-label="Menu" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
 
 <!-- HERO -->
@@ -1909,6 +1964,21 @@
 </footer>
 
 <script>
+  function toggleNav() {
+    const nav = document.getElementById('navLinks');
+    const btn = document.getElementById('hamburger');
+    nav.classList.toggle('open');
+    btn.classList.toggle('open');
+  }
+
+  // Close nav when a link is tapped on mobile
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.addEventListener('click', () => {
+      document.getElementById('navLinks').classList.remove('open');
+      document.getElementById('hamburger').classList.remove('open');
+    });
+  });
+
   const days = 1095;
   const el = document.getElementById('age-counter');
   let count = 0;
