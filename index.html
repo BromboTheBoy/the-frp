@@ -1,0 +1,1931 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Football Reclamation Project</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;700;900&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pitch: #013322;
+    --pitch-mid: #01261A;
+    --pitch-deep: #00140E;
+    --chalk: #F2EDE4;
+    --chalk-dim: #C8C0B0;
+    --ember: #E85C1A;
+    --ember-dim: #B84A14;
+    --steel: #1C2B35;
+    --gold: #C8A84B;
+    --gold-dim: #A08535;
+    --white: #FFFFFF;
+    --type-display: 'Barlow Condensed', sans-serif;
+    --type-body: 'DM Sans', sans-serif;
+    --type-mono: 'DM Mono', monospace;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--pitch-deep);
+    color: var(--chalk);
+    font-family: var(--type-body);
+    font-size: 16px;
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(0,20,14,0.92);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid rgba(200,168,75,0.15);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+
+  .nav-logo {
+    font-family: var(--type-display);
+    font-weight: 900;
+    font-size: 1.1rem;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-family: var(--type-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--chalk-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--chalk); }
+
+  .nav-cta {
+    background: var(--ember);
+    color: var(--white) !important;
+    padding: 0.4rem 1rem;
+    border-radius: 2px;
+  }
+
+  /* SECTIONS */
+  section {
+    padding: 6rem 0;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+
+  .section-full {
+    max-width: none;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* LABELS */
+  .eyebrow {
+    font-family: var(--type-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  /* HERO */
+  .hero {
+    min-height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem 2rem;
+    max-width: none;
+    position: relative;
+    border-bottom: 1px solid rgba(200,168,75,0.12);
+  }
+
+  .hero-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .hero-kicker {
+    font-family: var(--type-mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .hero-kicker::before {
+    content: '';
+    display: block;
+    width: 2rem;
+    height: 1px;
+    background: var(--gold);
+    flex-shrink: 0;
+  }
+
+  .hero-headline {
+    font-family: var(--type-display);
+    font-weight: 900;
+    font-size: clamp(3.5rem, 9vw, 8rem);
+    line-height: 0.92;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    color: var(--chalk);
+    margin-bottom: 1rem;
+  }
+
+  .hero-headline em {
+    color: var(--ember);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 1.05rem;
+    color: var(--chalk-dim);
+    max-width: 520px;
+    margin-top: 2rem;
+    line-height: 1.75;
+    font-weight: 300;
+  }
+
+  .hero-actions {
+    margin-top: 3rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .btn-primary {
+    background: var(--ember);
+    color: var(--white);
+    font-family: var(--type-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.85rem 2rem;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s;
+    display: inline-block;
+  }
+
+  .btn-primary:hover { background: var(--ember-dim); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--chalk-dim);
+    font-family: var(--type-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.85rem 1.5rem;
+    border: 1px solid rgba(200,192,176,0.25);
+    border-radius: 2px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-block;
+  }
+
+  .btn-ghost:hover {
+    border-color: rgba(200,192,176,0.6);
+    color: var(--chalk);
+  }
+
+  /* URGENCY BLOCK — SIGNATURE ELEMENT */
+  .urgency-block {
+    background: var(--pitch-mid);
+    border: 1px solid rgba(200,168,75,0.2);
+    border-left: 4px solid var(--ember);
+    padding: 2rem 2.5rem;
+    margin-top: 4rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0;
+  }
+
+  .urgency-stat {
+    padding: 0.75rem 1.5rem 0.75rem 0;
+    border-right: 1px solid rgba(200,168,75,0.1);
+  }
+
+  .urgency-stat:last-child { border-right: none; }
+
+  .urgency-num {
+    font-family: var(--type-display);
+    font-weight: 900;
+    font-size: 3rem;
+    line-height: 1;
+    color: var(--ember);
+  }
+
+  .urgency-label {
+    font-family: var(--type-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--chalk-dim);
+    margin-top: 0.5rem;
+  }
+
+  .urgency-note {
+    font-size: 0.8rem;
+    color: var(--chalk-dim);
+    margin-top: 0.35rem;
+  }
+
+  /* DIVIDERS */
+  .hr-gold {
+    border: none;
+    border-top: 1px solid rgba(200,168,75,0.15);
+    margin: 0;
+  }
+
+  /* MANIFESTO */
+  .manifesto-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+    margin-top: 3rem;
+  }
+
+  .manifesto-headline {
+    font-family: var(--type-display);
+    font-weight: 900;
+    font-size: clamp(2.5rem, 4vw, 3.8rem);
+    line-height: 1;
+    text-transform: uppercase;
+    color: var(--chalk);
+    margin-bottom: 1.5rem;
+  }
+
+  .manifesto-headline em {
+    color: var(--ember);
+    font-style: normal;
+    display: block;
+  }
+
+  .manifesto-text {
+    color: var(--chalk-dim);
+    line-height: 1.8;
+    font-weight: 300;
+    margin-bottom: 1.2rem;
+  }
+
+  .manifesto-quote {
+    font-family: var(--type-display);
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: var(--gold);
+    border-left: 3px solid var(--gold);
+    padding-left: 1.2rem;
+    margin-top: 2rem;
+    line-height: 1.4;
+  }
+
+  /* PILLARS / TRACKS */
+  .pillars-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: end;
+    margin-bottom: 3rem;
+  }
+
+  .section-headline {
+    font-family: var(--type-display);
+    font-weight: 900;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    text-transform: uppercase;
+    line-height: 1;
+    color: var(--chalk);
+  }
+
+  .section-headline em {
+    color: var(--ember);
+    font-style: normal;
+  }
+
+  .pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(200,168,75,0.1);
+    border: 1px solid rgba(200,168,75,0.1);
+  }
+
+  .pillar-card {
+    background: var(--pitch-mid);
+    padding: 2rem;
+    transition: background 0.2s;
+    cursor: default;
+  }
+
+  .pillar-card:hover {
+    background: var(--pitch);
+  }
+
+  .pillar-num {
+    font-family: var(--type-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--gold);
+    margin-bottom: 1.2rem;
+  }
+
+  .pillar-title {
+    font-family: var(--type-display);
+    font-weight: 700;
+    font-size: 1.3rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    color: var(--chalk);
+    margin-bottom: 0.75rem;
+    line-height: 1.1;
+  }
+
+  .pillar-text {
+    font-size: 0.875rem;
+    color: var(--chalk-dim);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .pillar-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 1.2rem;
+  }
+
+  .tag {
+    font-family: var(--type-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--chalk-dim);
+    border: 1px solid rgba(200,192,176,0.2);
+    padding: 0.2rem 0.5rem;
+    border-radius: 1px;
+  }
+
+  /* TRACKS / PATHWAYS */
+  .tracks-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    margin-top: 3rem;
+    border: 1px solid rgba(200,168,75,0.12);
+    background: rgba(200,168,75,0.06);
+  }
+
+  .track-row {
+    background: var(--pitch-deep);
+    padding: 1.5rem 2rem;
+    display: grid;
+    grid-template-columns: 80px 1fr 1fr auto;
+    gap: 1.5rem;
+    align-items: center;
+    border-bottom: 1px solid rgba(200,168,75,0.06);
+    transition: background 0.15s;
+  }
+
+  .track-row:last-child { border-bottom: none; }
+  .track-row:hover { background: var(--pitch-mid); }
+
+  .track-code {
+    font-family: var(--type-display);
+    font-weight: 900;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    color: var(--ember);
+    letter-spacing: 0.04em;
+  }
+
+  .track-name {
+    font-family: var(--type-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+    text-transform: uppercase;
+    color: var(--chalk);
+    letter-spacing: 0.03em;
+  }
+
+  .track-desc {
+    font-size: 0.82rem;
+    color: var(--chalk-dim);
+    line-height: 1.5;
+  }
+
+  .track-badge {
+    font-family: var(--type-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.25rem 0.65rem;
+    border-radius: 1px;
+    white-space: nowrap;
+    background: rgba(200,168,75,0.1);
+    color: var(--gold);
+    border: 1px solid rgba(200,168,75,0.2);
+  }
+
+  /* PHASES */
+  .phases-timeline {
+    position: relative;
+    margin-top: 3rem;
+  }
+
+  .phases-timeline::before {
+    content: '';
+    position: absolute;
+    left: 3rem;
+    top: 0; bottom: 0;
+    width: 1px;
+    background: rgba(200,168,75,0.15);
+  }
+
+  .phase {
+    display: grid;
+    grid-template-columns: 6rem 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+    position: relative;
+  }
+
+  .phase-marker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    padding-top: 0.2rem;
+  }
+
+  .phase-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--ember);
+    border: 2px solid var(--pitch-deep);
+    box-shadow: 0 0 0 3px rgba(232,92,26,0.25);
+    flex-shrink: 0;
+    margin-left: 0.35rem;
+  }
+
+  .phase-period {
+    font-family: var(--type-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  .phase-content {
+    background: var(--pitch-mid);
+    border: 1px solid rgba(200,168,75,0.1);
+    padding: 2rem;
+  }
+
+  .phase-num {
+    font-family: var(--type-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    color: var(--ember);
+    text-transform: uppercase;
+    margin-bottom: 0.5rem;
+  }
+
+  .phase-title {
+    font-family: var(--type-display);
+    font-weight: 900;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    color: var(--chalk);
+    margin-bottom: 0.75rem;
+    line-height: 1;
+  }
+
+  .phase-desc {
+    font-size: 0.875rem;
+    color: var(--chalk-dim);
+    line-height: 1.75;
+    font-weight: 300;
+    margin-bottom: 1.2rem;
+  }
+
+  .phase-deliverable {
+    background: rgba(200,168,75,0.07);
+    border-left: 2px solid var(--gold);
+    padding: 0.75rem 1rem;
+    margin-top: 1rem;
+  }
+
+  .phase-deliverable-label {
+    font-family: var(--type-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.3rem;
+  }
+
+  .phase-deliverable-text {
+    font-size: 0.8rem;
+    color: var(--chalk-dim);
+    line-height: 1.6;
+  }
+
+  /* REVENUE */
+  .revenue-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(200,168,75,0.1);
+    border: 1px solid rgba(200,168,75,0.1);
+    margin-top: 3rem;
+  }
+
+  .revenue-card {
+    background: var(--pitch-mid);
+    padding: 2rem;
+  }
+
+  .revenue-card-label {
+    font-family: var(--type-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--chalk-dim);
+    margin-bottom: 0.5rem;
+  }
+
+  .revenue-amount {
+    font-family: var(--type-display);
+    font-weight: 900;
+    font-size: 2.2rem;
+    line-height: 1;
+    color: var(--gold);
+    margin-bottom: 0.25rem;
+  }
+
+  .revenue-freq {
+    font-family: var(--type-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    color: var(--chalk-dim);
+    text-transform: uppercase;
+  }
+
+  .revenue-desc {
+    font-size: 0.82rem;
+    color: var(--chalk-dim);
+    line-height: 1.65;
+    font-weight: 300;
+    margin-top: 1rem;
+  }
+
+  .revenue-total {
+    background: var(--steel);
+    border: 1px solid rgba(200,168,75,0.2);
+    padding: 2rem 2.5rem;
+    margin-top: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .revenue-total-label {
+    font-family: var(--type-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--chalk-dim);
+  }
+
+  .revenue-total-num {
+    font-family: var(--type-display);
+    font-weight: 900;
+    font-size: 2.5rem;
+    color: var(--ember);
+    letter-spacing: 0.02em;
+  }
+
+  .revenue-total-note {
+    font-size: 0.78rem;
+    color: var(--chalk-dim);
+    max-width: 380px;
+    line-height: 1.6;
+  }
+
+  /* PARTNERS */
+  .partners-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: rgba(200,168,75,0.1);
+    border: 1px solid rgba(200,168,75,0.1);
+    margin-top: 3rem;
+  }
+
+  .partner-card {
+    background: var(--pitch-mid);
+    padding: 2rem;
+  }
+
+  .partner-label {
+    font-family: var(--type-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ember);
+    margin-bottom: 0.5rem;
+  }
+
+  .partner-name {
+    font-family: var(--type-display);
+    font-weight: 900;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    color: var(--chalk);
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.03em;
+  }
+
+  .partner-text {
+    font-size: 0.85rem;
+    color: var(--chalk-dim);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .partner-offer {
+    margin-top: 1.2rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(200,168,75,0.1);
+    font-family: var(--type-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    text-transform: uppercase;
+  }
+
+  /* TRUST */
+  .trust-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    margin-top: 3rem;
+    align-items: start;
+  }
+
+  .trust-item {
+    border-top: 1px solid rgba(200,168,75,0.15);
+    padding-top: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .trust-num {
+    font-family: var(--type-display);
+    font-weight: 900;
+    font-size: 2.5rem;
+    color: var(--ember);
+    line-height: 1;
+    margin-bottom: 0.25rem;
+  }
+
+  .trust-label {
+    font-family: var(--type-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--chalk-dim);
+    margin-bottom: 0.5rem;
+  }
+
+  .trust-desc {
+    font-size: 0.85rem;
+    color: var(--chalk-dim);
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  /* CTA SECTION */
+  .cta-section {
+    background: var(--pitch);
+    border-top: 1px solid rgba(200,168,75,0.15);
+    border-bottom: 1px solid rgba(200,168,75,0.15);
+    padding: 6rem 2rem;
+    max-width: none;
+  }
+
+  .cta-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 4rem;
+    align-items: center;
+  }
+
+  .cta-headline {
+    font-family: var(--type-display);
+    font-weight: 900;
+    font-size: clamp(2rem, 3.5vw, 3rem);
+    text-transform: uppercase;
+    color: var(--chalk);
+    line-height: 1;
+    margin-bottom: 1rem;
+  }
+
+  .cta-headline em { color: var(--ember); font-style: normal; }
+
+  .cta-subtext {
+    font-size: 0.9rem;
+    color: var(--chalk-dim);
+    max-width: 480px;
+    line-height: 1.75;
+    font-weight: 300;
+  }
+
+  .cta-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: flex-end;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--pitch-deep);
+    border-top: 1px solid rgba(200,168,75,0.1);
+    padding: 3rem 2rem;
+  }
+
+  .footer-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid rgba(200,168,75,0.1);
+    margin-bottom: 2rem;
+  }
+
+  .footer-brand {
+    font-family: var(--type-display);
+    font-weight: 900;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-tagline {
+    font-size: 0.82rem;
+    color: var(--chalk-dim);
+    line-height: 1.65;
+    font-weight: 300;
+  }
+
+  .footer-col-label {
+    font-family: var(--type-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--chalk-dim);
+    margin-bottom: 1rem;
+  }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footer-links a {
+    font-size: 0.85rem;
+    color: var(--chalk-dim);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-links a:hover { color: var(--chalk); }
+
+  .footer-bottom {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-copy {
+    font-family: var(--type-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--chalk-dim);
+  }
+
+  /* ── INDEX ECOSYSTEM ──────────────────────────────────────────── */
+  .ecosystem-section {
+    background: var(--pitch-deep);
+    border-top: 1px solid rgba(200,168,75,0.12);
+    border-bottom: 1px solid rgba(200,168,75,0.12);
+    padding: 6rem 0;
+    max-width: none;
+  }
+  .ecosystem-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: rgba(200,168,75,0.1);
+    border: 1px solid rgba(200,168,75,0.1);
+    margin-top: 3.5rem;
+  }
+  .product-card {
+    background: var(--pitch-mid);
+    padding: 2.5rem 2rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+  }
+  .product-card:hover { background: var(--pitch); }
+  .product-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .product-card.watch::before   { background: var(--gold); }
+  .product-card.eye::before     { background: var(--ember); }
+  .product-card.platform::before { background: #62C49A; }
+  .product-phase-tag {
+    font-family: var(--type-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    padding: 0.2rem 0.6rem;
+    border-radius: 1px;
+    display: inline-block;
+    margin-bottom: 1.5rem;
+  }
+  .tag-now    { background: rgba(98,196,154,0.12);  color: #62C49A; }
+  .tag-next   { background: rgba(232,92,26,0.12);   color: var(--ember); }
+  .tag-future { background: rgba(200,168,75,0.1);   color: var(--gold); }
+  .product-icon { font-size: 2rem; margin-bottom: 1rem; line-height: 1; display: block; }
+  .product-name {
+    font-family: var(--type-display);
+    font-weight: 900;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    color: var(--chalk);
+    letter-spacing: 0.03em;
+    margin-bottom: 0.3rem;
+    line-height: 1.05;
+  }
+  .product-sub {
+    font-family: var(--type-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--chalk-dim);
+    margin-bottom: 1.25rem;
+  }
+  .product-desc {
+    font-size: 0.875rem;
+    color: var(--chalk-dim);
+    line-height: 1.75;
+    font-weight: 300;
+    margin-bottom: 1.5rem;
+  }
+  .product-specs { list-style: none; display: flex; flex-direction: column; gap: 0.45rem; }
+  .product-specs li {
+    font-family: var(--type-mono);
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
+    color: var(--chalk-dim);
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    line-height: 1.5;
+  }
+  .product-specs li::before { content: '→'; color: var(--gold); flex-shrink: 0; }
+
+  .dataflow-section { margin-top: 5rem; }
+  .dataflow-diagram {
+    margin-top: 2rem;
+    background: var(--pitch-mid);
+    border: 1px solid rgba(200,168,75,0.1);
+    padding: 2.5rem 2rem;
+    overflow-x: auto;
+  }
+  .flow-nodes {
+    display: flex;
+    align-items: center;
+    min-width: 700px;
+  }
+  .flow-node {
+    flex: 1;
+    text-align: center;
+    padding: 1.25rem 0.75rem;
+  }
+  .flow-node-icon { font-size: 1.6rem; margin-bottom: 0.6rem; display: block; }
+  .flow-node-name {
+    font-family: var(--type-display);
+    font-weight: 700;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    color: var(--chalk);
+    margin-bottom: 0.25rem;
+    letter-spacing: 0.04em;
+  }
+  .flow-node-sub {
+    font-family: var(--type-mono);
+    font-size: 0.58rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--chalk-dim);
+  }
+  .flow-arrow {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 0.25rem;
+  }
+  .flow-arrow-row {
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .flow-arrow-line {
+    width: 42px;
+    height: 1px;
+    background: rgba(200,168,75,0.3);
+  }
+  .flow-arrow-head { color: var(--gold); font-size: 0.75rem; line-height: 1; }
+  .flow-arrow-label {
+    font-family: var(--type-mono);
+    font-size: 0.52rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--chalk-dim);
+    white-space: nowrap;
+    margin-top: 5px;
+    text-align: center;
+  }
+
+  .top1-section {
+    margin-top: 5rem;
+    background: var(--steel);
+    border: 1px solid rgba(200,168,75,0.15);
+    padding: 3rem 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr 1.5fr;
+    gap: 4rem;
+    align-items: center;
+  }
+  .top1-label {
+    font-family: var(--type-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ember);
+    margin-bottom: 0.75rem;
+  }
+  .top1-headline {
+    font-family: var(--type-display);
+    font-weight: 900;
+    font-size: 3.2rem;
+    text-transform: uppercase;
+    line-height: 0.95;
+    color: var(--chalk);
+    margin-bottom: 0.75rem;
+  }
+  .top1-headline em { color: var(--gold); font-style: normal; display: block; }
+  .top1-sub { font-size: 0.85rem; color: var(--chalk-dim); line-height: 1.75; font-weight: 300; }
+  .top1-item {
+    border-top: 1px solid rgba(200,168,75,0.1);
+    padding: 1rem 0;
+    display: grid;
+    grid-template-columns: 2.5rem 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+  .top1-item:last-child { border-bottom: 1px solid rgba(200,168,75,0.1); }
+  .top1-num { font-family: var(--type-display); font-weight: 900; font-size: 1.3rem; color: var(--ember); line-height: 1; padding-top: 2px; }
+  .top1-title { font-family: var(--type-display); font-weight: 700; font-size: 0.9rem; text-transform: uppercase; color: var(--chalk); letter-spacing: 0.03em; margin-bottom: 0.25rem; }
+  .top1-desc { font-size: 0.8rem; color: var(--chalk-dim); line-height: 1.6; font-weight: 300; }
+
+  .isikuti-callout {
+    margin-top: 3rem;
+    border: 1px solid rgba(200,168,75,0.15);
+    padding: 2rem 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 3rem;
+    align-items: center;
+    background: rgba(1,51,34,0.4);
+  }
+  .isikuti-label { font-family: var(--type-mono); font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+  .isikuti-name { font-family: var(--type-display); font-weight: 900; font-size: 1.8rem; text-transform: uppercase; color: var(--chalk); line-height: 1; margin-bottom: 0.5rem; }
+  .isikuti-tagline { font-family: var(--type-mono); font-size: 0.65rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ember); }
+  .isikuti-body { font-size: 0.875rem; color: var(--chalk-dim); line-height: 1.75; font-weight: 300; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .product-grid { grid-template-columns: 1fr; }
+    .top1-section { grid-template-columns: 1fr; gap: 2rem; }
+    .isikuti-callout { grid-template-columns: 1fr; gap: 1.5rem; }
+    .top1-headline { font-size: 2.2rem; }
+    .manifesto-grid, .trust-grid, .pillars-header,
+    .cta-inner, .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .pillars-grid, .revenue-grid, .partners-grid { grid-template-columns: 1fr; }
+    .track-row { grid-template-columns: 60px 1fr; }
+    .track-desc, .track-badge { display: none; }
+    .cta-actions { align-items: flex-start; }
+    section { padding: 4rem 1.5rem; }
+  }
+
+  @media (max-width: 480px) {
+    .hero-headline { font-size: 3rem; }
+    .urgency-block { grid-template-columns: 1fr 1fr; }
+    .urgency-stat { border-right: none; border-bottom: 1px solid rgba(200,168,75,0.1); }
+  }
+
+  /* LIVE COUNTER */
+  #age-counter {
+    font-family: var(--type-display);
+    font-weight: 900;
+    font-size: 3rem;
+    color: var(--ember);
+    line-height: 1;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div style="display:flex; flex-direction:column; gap:0.15rem;">
+    <a href="#" class="nav-logo">The Football Reclamation Project</a>
+    <div style="font-family:var(--type-mono); font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--chalk-dim);">By Chendeleza Africa</div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#about">The Problem</a></li>
+    <li><a href="#traction">Traction</a></li>
+    <li><a href="#tracks">Tracks</a></li>
+    <li><a href="#phases">Phases</a></li>
+    <li><a href="#scale">To $5M</a></li>
+    <li><a href="#ecosystem">Index</a></li>
+    <li><a href="#join" class="nav-cta">Get Involved</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero section-full">
+  <div class="hero-inner">
+    <div class="hero-kicker">The Football Reclamation Project</div>
+    <h1 class="hero-headline">
+      Football<br>
+      <em>Leaves</em><br>
+      <em>People</em><br>
+      Behind.
+    </h1>
+    <p class="hero-sub">
+      Our programme converts high-quality rejected players into industry professionals and generates the data to do it. The platform monetises it. The hardware deepens it. Every customer makes the database more valuable. The database is the business.
+    </p>
+    <div class="hero-actions">
+      <a href="#traction" class="btn-primary">See Traction →</a>
+      <a href="#scale" class="btn-ghost">Path to $5M ARR</a>
+    </div>
+
+    <!-- URGENCY STATS -->
+    <div class="urgency-block">
+      <div class="urgency-stat">
+        <div class="urgency-num" style="color:var(--gold);">58</div>
+        <div class="urgency-label">Verified players</div>
+        <div class="urgency-note">Live on Index Athlete · growing</div>
+      </div>
+      <div class="urgency-stat">
+        <div class="urgency-num">290</div>
+        <div class="urgency-label">Opportunities unlocked</div>
+        <div class="urgency-note">Through the Index Athlete platform</div>
+      </div>
+      <div class="urgency-stat">
+        <div class="urgency-num">1,095</div>
+        <div class="urgency-label">Days in the window</div>
+        <div class="urgency-note">18 to 21 — the only time that matters</div>
+      </div>
+      <div class="urgency-stat">
+        <div class="urgency-num">85th</div>
+        <div class="urgency-label">Percentile minimum</div>
+        <div class="urgency-note">Top talent. No data. No pathway.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="hr-gold">
+
+<!-- THE PROBLEM / MANIFESTO -->
+<section id="about">
+  <span class="eyebrow">The Problem</span>
+  <div class="manifesto-grid">
+    <div>
+      <h2 class="manifesto-headline">
+        The Sport<br>
+        Takes<br>
+        <em>Everything.</em><br>
+        Gives Back<br>
+        Nothing.
+      </h2>
+    </div>
+    <div>
+      <p class="manifesto-text">
+        A player trains for years. Attends every trial. Represents their school, their county, their country in youth tournaments. Their parents spend money they don't have. Coaches invest hours they'll never recover.
+      </p>
+      <p class="manifesto-text">
+        Then the academy releases them. Or the national setup doesn't call. Or they age out — and the industry treats this as natural, even inevitable. It isn't. It's a systems failure with a fixable cost.
+      </p>
+      <p class="manifesto-text">
+        The global football industry employs millions of people who never played professionally. Coaches, analysts, kit designers, fitness scientists, barbers, physiotherapists, groundskeepers, referees, stewards, data scouts. These roles exist everywhere. They just don't exist yet as an organized pathway out of the rejection funnel.
+      </p>
+      <p class="manifesto-text">
+        For nations outside the top half of the FIFA rankings — for Kenya, for Uganda, for those who did not make the World Cup — this is a talent retention crisis hiding in plain sight.
+      </p>
+      <div class="manifesto-quote">
+        "The best 18-year-old in Chapa Dimba who didn't make it to Harambee Stars under-20 is not a failure. They're an unclaimed asset."
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="hr-gold">
+
+<!-- TRACTION -->
+<section id="traction">
+  <span class="eyebrow">Traction</span>
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:end; margin-bottom:3rem;">
+    <h2 class="section-headline">Not a Pitch.<br>A Programme<br><em>Already Moving.</em></h2>
+    <p style="color:var(--chalk-dim); font-weight:300; font-size:0.88rem; line-height:1.8;">
+      Investors fund momentum. Here is what exists before the first cohort cheque is signed. The demos are live. The partnerships are signed. The thesis has been stress-tested at the highest level of pan-African venture capital.
+    </p>
+  </div>
+
+  <!-- TRACTION GRID -->
+  <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(200,168,75,0.1); border:1px solid rgba(200,168,75,0.1); margin-bottom:2rem;">
+
+    <div style="background:var(--pitch-mid); padding:2rem;">
+      <div style="font-family:var(--type-mono); font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--ember); margin-bottom:0.75rem;">Signed Partnership</div>
+      <div style="font-family:var(--type-display); font-weight:900; font-size:1.6rem; text-transform:uppercase; color:var(--chalk); line-height:1; margin-bottom:0.6rem;">La Liga</div>
+      <p style="font-size:0.82rem; color:var(--chalk-dim); line-height:1.7; font-weight:300;">Onboarded La Liga — global football's leading commercial IP holder — as a Chendeleza Africa institutional partner. The La Liga Eldoret Cup is the operational output. This is not a letter of intent. It is a working relationship.</p>
+    </div>
+
+    <div style="background:var(--pitch-mid); padding:2rem;">
+      <div style="font-family:var(--type-mono); font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--ember); margin-bottom:0.75rem;">Signed Partnership</div>
+      <div style="font-family:var(--type-display); font-weight:900; font-size:1.6rem; text-transform:uppercase; color:var(--chalk); line-height:1; margin-bottom:0.6rem;">UN Football<br>for the Goals</div>
+      <p style="font-size:0.82rem; color:var(--chalk-dim); line-height:1.7; font-weight:300;">Partnership with the UN's global initiative using football to advance the SDGs. Places the FRP inside an international development reporting framework — the credential that opens doors at national association and government level.</p>
+    </div>
+
+    <div style="background:var(--pitch-mid); padding:2rem;">
+      <div style="font-family:var(--type-mono); font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--ember); margin-bottom:0.75rem;">Signed Partnership</div>
+      <div style="font-family:var(--type-display); font-weight:900; font-size:1.6rem; text-transform:uppercase; color:var(--chalk); line-height:1; margin-bottom:0.6rem;">Football Foundation for Africa</div>
+      <p style="font-size:0.82rem; color:var(--chalk-dim); line-height:1.7; font-weight:300;">Continental body focused on grassroots development infrastructure. Direct alignment with the FRP mandate and a warm introduction pathway to national associations across East and Central Africa.</p>
+    </div>
+
+    <div style="background:var(--pitch-mid); padding:2rem;">
+      <div style="font-family:var(--type-mono); font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:0.75rem;">Live Product</div>
+      <div style="font-family:var(--type-display); font-weight:900; font-size:1.6rem; text-transform:uppercase; color:var(--chalk); line-height:1; margin-bottom:0.6rem;">3 Platform Demos</div>
+      <p style="font-size:0.82rem; color:var(--chalk-dim); line-height:1.7; font-weight:300;">Index Athlete, AKAI FC, and Isikuti Soka are live and public-facing. Partners can see exactly what the FRP looks like before a single player is enrolled.</p>
+    </div>
+
+    <div style="background:var(--pitch-mid); padding:2rem;">
+      <div style="font-family:var(--type-mono); font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:0.75rem;">Capital Raised</div>
+      <div style="font-family:var(--type-display); font-weight:900; font-size:1.6rem; text-transform:uppercase; color:var(--chalk); line-height:1; margin-bottom:0.6rem;">$10,000 Seed Validated</div>
+      <p style="font-size:0.82rem; color:var(--chalk-dim); line-height:1.7; font-weight:300;">Early-stage capital raised, validating the product vision with investors and setting the financial foundation. Chendeleza Africa has been operating, not waiting. The FRP is the structured next chapter of a company already in motion.</p>
+    </div>
+
+  </div>
+
+  <!-- TRACTION QUOTE -->
+  <div style="background:var(--steel); border-left:4px solid var(--ember); padding:1.75rem 2rem;">
+    <p style="font-family:var(--type-display); font-weight:700; font-size:1.2rem; color:var(--chalk); line-height:1.4; margin-bottom:0.5rem;">
+      "Why can't someone with more money just do this tomorrow?"
+    </p>
+    <p style="font-size:0.85rem; color:var(--chalk-dim); line-height:1.75; font-weight:300; max-width:680px;">
+      Because they don't have the data. And the data takes years and trust to build. The partnerships, the community credibility, the on-the-ground relationships with Chapa Dimba networks and county FAs — these are not buyable assets. They are the result of 14 years of showing up. That is the moat.
+    </p>
+  </div>
+</section>
+
+<hr class="hr-gold">
+
+<!-- CAREER TRACKS -->
+<section id="tracks">
+  <div class="pillars-header">
+    <div>
+      <span class="eyebrow">Career Tracks</span>
+      <h2 class="section-headline">Fourteen<br>Ways to Stay<br><em>In the Game</em></h2>
+    </div>
+    <p style="color: var(--chalk-dim); font-weight: 300; font-size: 0.9rem; line-height: 1.75;">
+      Every track starts from football knowledge. Each is a real profession. Players choose a primary track and build credentials in it over twelve months, supported by coaching, mentorship, and industry placement.
+    </p>
+  </div>
+
+  <div class="tracks-list">
+    <div class="track-row">
+      <div class="track-code">COACH</div>
+      <div class="track-name">Coaching &amp; Football Education</div>
+      <div class="track-desc">Train to CAF/UEFA license level. Deploy into academies, schools, and community programs. Position players who understand the game from the inside.</div>
+      <div class="track-badge">On-pitch</div>
+    </div>
+    <div class="track-row">
+      <div class="track-code">REF</div>
+      <div class="track-name">Refereeing &amp; Match Officials</div>
+      <div class="track-desc">A chronically underserved pipeline. Players with game IQ become exceptional officials. FKF and CECAFA certification pathways built in.</div>
+      <div class="track-badge">On-pitch</div>
+    </div>
+    <div class="track-row">
+      <div class="track-code">DATA</div>
+      <div class="track-name">Performance Analysis &amp; Scouting</div>
+      <div class="track-desc">Video review, opposition analysis, GPS data interpretation, player profiling for clubs and associations who need local talent to do this work.</div>
+      <div class="track-badge">Technical</div>
+    </div>
+    <div class="track-row">
+      <div class="track-code">FIT</div>
+      <div class="track-name">Fitness, S&amp;C, Nutrition</div>
+      <div class="track-desc">Sports science applied to East African bodies, budgets, and environments. Certified trainers and nutritionists for clubs that cannot afford imports.</div>
+      <div class="track-badge">Technical</div>
+    </div>
+    <div class="track-row">
+      <div class="track-code">PITCH</div>
+      <div class="track-name">Groundskeeping &amp; Facilities</div>
+      <div class="track-desc">A skilled groundskeeper is one of the most valuable people at any club. Turf science, irrigation, and maintenance — a profession with consistent demand.</div>
+      <div class="track-badge">Operations</div>
+    </div>
+    <div class="track-row">
+      <div class="track-code">BIZ</div>
+      <div class="track-name">Sales, Sponsorship &amp; Marketing</div>
+      <div class="track-desc">Football people who can sell football products. Kit deals, broadcast packages, event sponsorships, academy fee structures. The commercial engine every club needs.</div>
+      <div class="track-badge">Commercial</div>
+    </div>
+    <div class="track-row">
+      <div class="track-code">MAKE</div>
+      <div class="track-name">Design, Media &amp; Content</div>
+      <div class="track-desc">Kits, match programmes, club branding, social content. Designers and storytellers who understand the culture because they lived it.</div>
+      <div class="track-badge">Creative</div>
+    </div>
+    <div class="track-row">
+      <div class="track-code">CRAFT</div>
+      <div class="track-name">Barbers, Tailors &amp; Kit Mechanics</div>
+      <div class="track-desc">Every professional club needs skilled people in the dressing room. Barbers who travel with squads. Tailors who manage kits. Mechanics for equipment. Dignified, sustainable work inside the game.</div>
+      <div class="track-badge">Operations</div>
+    </div>
+  </div>
+</section>
+
+<hr class="hr-gold">
+
+<!-- THREE PILLARS -->
+<section>
+  <span class="eyebrow">Programme Design</span>
+  <h2 class="section-headline" style="margin-bottom: 3rem;">What We<br>Actually <em>Do</em></h2>
+  <div class="pillars-grid">
+    <div class="pillar-card">
+      <div class="pillar-num">01 — Intake</div>
+      <div class="pillar-title">Identify and Verify</div>
+      <p class="pillar-text">We identify 18-year-old players at the 85th percentile and above, using verified tournament records, academy assessments, and coach recommendations. We work through Chapa Dimba, Cheza Dimba, and county FA networks. Every enrolled player has a verified Index — a digital player record showing what they did and where they played.</p>
+      <div class="pillar-tags">
+        <span class="tag">Chapa Dimba</span>
+        <span class="tag">Academy records</span>
+        <span class="tag">Coach referrals</span>
+      </div>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-num">02 — Develop</div>
+      <div class="pillar-title">Build the Professional</div>
+      <p class="pillar-text">Players enrol in a twelve-month residential and blended programme. They choose a primary career track, receive 300+ hours of structured instruction, and complete supervised placements with partner clubs and organizations. Development is documented weekly. Coaches, mentors, and industry practitioners lead sessions — many of them reclaimed talent themselves.</p>
+      <div class="pillar-tags">
+        <span class="tag">12 months</span>
+        <span class="tag">300+ hours</span>
+        <span class="tag">Track placement</span>
+      </div>
+    </div>
+    <div class="pillar-card">
+      <div class="pillar-num">03 — Place</div>
+      <div class="pillar-title">Deploy into the Industry</div>
+      <p class="pillar-text">Graduates are placed directly with clubs, academies, national associations, brands, and football businesses. The programme maintains an active talent market — partners come to us because our graduates understand the game from the inside. Placement is a measured outcome and a revenue mechanism; we charge placement fees to hiring organizations.</p>
+      <div class="pillar-tags">
+        <span class="tag">Club placements</span>
+        <span class="tag">Association roles</span>
+        <span class="tag">Industry partners</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="hr-gold">
+
+<!-- PHASED DELIVERY -->
+<section id="phases">
+  <span class="eyebrow">Delivery Plan</span>
+  <h2 class="section-headline" style="margin-bottom: 0.5rem;">How We<br>Build This <em>Consistently</em></h2>
+  <p style="color: var(--chalk-dim); font-weight: 300; font-size: 0.88rem; margin-top: 1rem; margin-bottom: 1rem;">A phased rollout that generates revenue at every stage. Each phase can stand alone and be invoiced independently.</p>
+
+  <div class="phases-timeline">
+    <div class="phase">
+      <div class="phase-marker">
+        <div class="phase-dot"></div>
+        <div class="phase-period">Months 1–3</div>
+      </div>
+      <div class="phase-content">
+        <div class="phase-num">Phase 01</div>
+        <h3 class="phase-title">Proof of Pipeline</h3>
+        <p class="phase-desc">Identify and enrol the first 20 players using existing Chapa Dimba networks and county FA relationships. Document their histories. Build the Index Athlete profiles. Commission one external report on the talent gap in East African football for use in partner pitches. No facilities needed — assessment is mobile.</p>
+        <div class="phase-deliverable">
+          <div class="phase-deliverable-label">Paid deliverable</div>
+          <div class="phase-deliverable-text">Research report sold to Safaricom Foundation / FKF / county sports offices · 20 verified player profiles · pilot programme proposal deck for national association</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-marker">
+        <div class="phase-dot"></div>
+        <div class="phase-period">Months 4–9</div>
+      </div>
+      <div class="phase-content">
+        <div class="phase-num">Phase 02</div>
+        <h3 class="phase-title">First Cohort</h3>
+        <p class="phase-desc">Run the first 12-month track programme with 20 players across 4 tracks: Coaching, Analysis, Commercial, and one Craft track. Deliver blended learning in partnership with at least one county government or sponsor. Place graduates into pre-negotiated roles with 3 partner clubs. Document outcomes rigorously — this is the case study that sells everything that follows.</p>
+        <div class="phase-deliverable">
+          <div class="phase-deliverable-label">Paid deliverable</div>
+          <div class="phase-deliverable-text">Programme fees from Safaricom / FA partners · placement fees from hiring clubs · impact report for renewal pitch · media rights to the cohort story</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-marker">
+        <div class="phase-dot"></div>
+        <div class="phase-period">Year 2</div>
+      </div>
+      <div class="phase-content">
+        <div class="phase-num">Phase 03</div>
+        <h3 class="phase-title">Scale to 100</h3>
+        <p class="phase-desc">Expand to 100 players across all 8 primary tracks. Open the model to a second EA country (Uganda or Tanzania) via a licensed national association partnership. Build the Index Athlete platform into a standalone product — a verifiable digital record system for East African youth players that associations pay to access.</p>
+        <div class="phase-deliverable">
+          <div class="phase-deliverable-label">Paid deliverable</div>
+          <div class="phase-deliverable-text">Platform licensing to 3+ national FAs · corporate sponsor packages · alumni network subscription · placement market fees</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="phase">
+      <div class="phase-marker">
+        <div class="phase-dot"></div>
+        <div class="phase-period">Year 3+</div>
+      </div>
+      <div class="phase-content">
+        <div class="phase-num">Phase 04</div>
+        <h3 class="phase-title">The Standard</h3>
+        <p class="phase-desc">Become the recognized infrastructure for post-academy development in East Africa. Build the FRP Institute: a permanent home for research, credentials, and the talent market. License the curriculum to county sports boards. Publish an annual State of East African Football Talent report, sold to FAs, brands, and broadcast partners. Launch the alumni fund — reclaimed players who give back into the pipeline.</p>
+        <div class="phase-deliverable">
+          <div class="phase-deliverable-label">Paid deliverable</div>
+          <div class="phase-deliverable-text">Curriculum licensing · annual report · institute membership · alumni fund management fees · consultancy to FIFA/CAF on talent development models</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="hr-gold">
+
+<!-- SCALE / ELITE -->
+<section id="scale">
+
+  <!-- ELITE RE-ENTRY -->
+  <div style="background:var(--pitch-mid); border:1px solid rgba(200,168,75,0.15); border-left:4px solid var(--gold); padding:2.5rem;">
+    <div style="font-family:var(--type-mono); font-size:0.62rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:0.75rem;">The Top 1% — Elite Pathway Re-Entry</div>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:3rem; align-items:start;">
+      <div>
+        <div style="font-family:var(--type-display); font-weight:900; font-size:1.8rem; text-transform:uppercase; color:var(--chalk); line-height:1; margin-bottom:0.75rem;">For the Exceptional Few, the Database Opens a Different Door.</div>
+        <p style="font-size:0.85rem; color:var(--chalk-dim); line-height:1.8; font-weight:300;">
+          Within every cohort, a small number of players will produce Index data that places them unambiguously in a different category. Not just good programme graduates — demonstrably elite. Heart rate, movement data, tactical metrics, session records, coach assessments: all verified, all timestamped, all auditable.
+        </p>
+        <p style="font-size:0.85rem; color:var(--chalk-dim); line-height:1.8; font-weight:300; margin-top:0.75rem;">
+          For these players, the FRP becomes something different. Not a career transition — a second chance at the first career. The data makes the argument the player could not make alone. A trial is a performance on one day. An Index is a performance over 365 days. No scout misses that.
+        </p>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:0.75rem;">
+        <div style="background:var(--pitch); padding:1.2rem 1.5rem; border-left:2px solid var(--ember);">
+          <div style="font-family:var(--type-display); font-weight:700; font-size:0.9rem; text-transform:uppercase; color:var(--chalk); margin-bottom:0.25rem;">Club & National Team Re-Entry</div>
+          <div style="font-size:0.78rem; color:var(--chalk-dim); line-height:1.6; font-weight:300;">Verified performance records presented directly to FKF, Harambee Stars scouting network, and licensed club scouts. Not a trial request — a data submission.</div>
+        </div>
+        <div style="background:var(--pitch); padding:1.2rem 1.5rem; border-left:2px solid var(--ember);">
+          <div style="font-family:var(--type-display); font-weight:700; font-size:0.9rem; text-transform:uppercase; color:var(--chalk); margin-bottom:0.25rem;">Premium Track Placement</div>
+          <div style="font-size:0.78rem; color:var(--chalk-dim); line-height:1.6; font-weight:300;">Top DATA and COACH track performers with elite biometric records command the highest placement fees — clubs pay more for verified people.</div>
+        </div>
+        <div style="background:var(--pitch); padding:1.2rem 1.5rem; border-left:2px solid var(--gold);">
+          <div style="font-family:var(--type-display); font-weight:700; font-size:0.9rem; text-transform:uppercase; color:var(--chalk); margin-bottom:0.25rem;">Index Watch Beta Co-Design</div>
+          <div style="font-size:0.78rem; color:var(--chalk-dim); line-height:1.6; font-weight:300;">Top performers become the first wearers of Index Watch prototypes — co-designers of hardware built from their own training fingerprints. Their data ships the product.</div>
+        </div>
+        <div style="background:var(--pitch); padding:1.2rem 1.5rem; border-left:2px solid var(--gold);">
+          <div style="font-family:var(--type-display); font-weight:700; font-size:0.9rem; text-transform:uppercase; color:var(--chalk); margin-bottom:0.25rem;">Research & Innovation Pool</div>
+          <div style="font-size:0.78rem; color:var(--chalk-dim); line-height:1.6; font-weight:300;">Aggregated, anonymised top-1% data becomes the most valuable research output in East African football. Sold to FIFA, CAF, and academic institutions annually.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="hr-gold">
+
+<!-- PARTNERS -->
+<section id="partners">
+  <span class="eyebrow">Target Partners</span>
+  <h2 class="section-headline" style="margin-bottom: 3rem;">Who Pays<br>to <em>Reclaim</em><br>This Talent</h2>
+  <div class="partners-grid">
+    <div class="partner-card">
+      <div class="partner-label">Corporate Anchor</div>
+      <div class="partner-name">Safaricom Foundation</div>
+      <p class="partner-text">Safaricom already runs Chapa Dimba — the tournament that creates the very players who fall through the sieve. The FRP is the logical downstream investment: what happens to those players after the trophy presentation? The ask is clean and fits their existing narrative around youth and digital empowerment.</p>
+      <div class="partner-offer">Offer → Naming rights to Cohort 1 · Branded impact report · Player Index co-branding</div>
+    </div>
+    <div class="partner-card">
+      <div class="partner-label">Governing Body</div>
+      <div class="partner-name">Football Kenya Federation</div>
+      <p class="partner-text">FKF needs a deeper talent infrastructure than trials alone. The FRP provides a verified record system, a post-academy pathway, and a pipeline of credentialed coaches and officials — three things the federation currently has no organized solution for.</p>
+      <div class="partner-offer">Offer → Referee and coaching pipeline · Player verification system · Youth development advisory</div>
+    </div>
+    <div class="partner-card">
+      <div class="partner-label">Regional Body</div>
+      <div class="partner-name">CECAFA / CAF</div>
+      <p class="partner-text">For the wider East and Central African region, the FRP offers a model that can be licensed nationally. Countries that did not qualify for the World Cup share the same broken development story. The annual State of Talent report is something CECAFA does not yet publish — and should.</p>
+      <div class="partner-offer">Offer → Regional research · Curriculum licensing · Cross-border placement network</div>
+    </div>
+    <div class="partner-card">
+      <div class="partner-label">County Government</div>
+      <div class="partner-name">County Sports Boards</div>
+      <p class="partner-text">County governments in Kenya have sports budgets and political incentives to show youth employment outcomes. A verifiable "X young people employed in football" statistic is exactly what devolved government wants to report. We provide the programme; they provide facilities and co-funding.</p>
+      <div class="partner-offer">Offer → Employment data · Facility partnership · County-branded cohort track</div>
+    </div>
+  </div>
+</section>
+
+<hr class="hr-gold">
+
+<!-- FOUNDER / TEAM -->
+<section id="trust">
+  <span class="eyebrow">The Team</span>
+  <h2 class="section-headline" style="margin-bottom:0.5rem;">Built by Someone<br>Who Understands<br><em>Both Sides.</em></h2>
+  <p style="color:var(--chalk-dim); font-weight:300; font-size:0.9rem; line-height:1.8; max-width:580px; margin-top:1rem; margin-bottom:3.5rem;">
+    The FRP founder is not an outsider to football. He is not a development worker parachuted into the sport. He is a product of exactly the kind of talent development ecosystem the FRP is designed to fix — and he has spent 14 years building the commercial and institutional muscle to do something about it.
+  </p>
+
+  <!-- FOUNDER CARD -->
+  <div style="display:grid; grid-template-columns:1fr 1.8fr; gap:1px; background:rgba(200,168,75,0.1); border:1px solid rgba(200,168,75,0.1); margin-bottom:3rem;">
+
+    <!-- LEFT: Identity -->
+    <div style="background:var(--pitch-mid); padding:2.5rem 2rem;">
+      <div style="font-family:var(--type-mono); font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--ember); margin-bottom:1rem;">Founder &amp; CEO</div>
+      <div style="font-family:var(--type-display); font-weight:900; font-size:2.2rem; text-transform:uppercase; color:var(--chalk); line-height:1; margin-bottom:0.3rem;">Brombo<br>(The Boy)</div>
+      <div style="font-family:var(--type-mono); font-size:0.65rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold); margin-bottom:1.5rem;">Chendeleza Africa · Palilia Lab</div>
+      <p style="font-size:0.82rem; color:var(--chalk-dim); line-height:1.75; font-weight:300; margin-bottom:1.5rem;">
+        Founder, creative director, and business development executive. 14 years building IP-driven ventures at the intersection of talent, sport, media, and technology. Finance degree, Magna Cum Laude. Two competitive pan-African fellowships. Institutional deals with La Liga, the UN, and The Football Foundation for Africa.
+      </p>
+      <!-- Credential pills -->
+      <div style="display:flex; flex-wrap:wrap; gap:0.4rem; margin-bottom:1.5rem;">
+        <span style="font-family:var(--type-mono); font-size:0.58rem; letter-spacing:0.1em; text-transform:uppercase; padding:0.25rem 0.6rem; background:rgba(200,168,75,0.08); border:1px solid rgba(200,168,75,0.18); color:var(--gold); border-radius:1px;">Dream VC Fellow</span>
+        <span style="font-family:var(--type-mono); font-size:0.58rem; letter-spacing:0.1em; text-transform:uppercase; padding:0.25rem 0.6rem; background:rgba(200,168,75,0.08); border:1px solid rgba(200,168,75,0.18); color:var(--gold); border-radius:1px;">Jasiri Fellow</span>
+        <span style="font-family:var(--type-mono); font-size:0.58rem; letter-spacing:0.1em; text-transform:uppercase; padding:0.25rem 0.6rem; background:rgba(200,168,75,0.08); border:1px solid rgba(200,168,75,0.18); color:var(--gold); border-radius:1px;">Magna Cum Laude</span>
+        <span style="font-family:var(--type-mono); font-size:0.58rem; letter-spacing:0.1em; text-transform:uppercase; padding:0.25rem 0.6rem; background:rgba(200,168,75,0.08); border:1px solid rgba(200,168,75,0.18); color:var(--gold); border-radius:1px;">5× Published Author</span>
+        <span style="font-family:var(--type-mono); font-size:0.58rem; letter-spacing:0.1em; text-transform:uppercase; padding:0.25rem 0.6rem; background:rgba(232,92,26,0.08); border:1px solid rgba(232,92,26,0.2); color:var(--ember); border-radius:1px;">La Liga Partner</span>
+        <span style="font-family:var(--type-mono); font-size:0.58rem; letter-spacing:0.1em; text-transform:uppercase; padding:0.25rem 0.6rem; background:rgba(232,92,26,0.08); border:1px solid rgba(232,92,26,0.2); color:var(--ember); border-radius:1px;">UN Football for the Goals</span>
+      </div>
+      <div style="font-family:var(--type-mono); font-size:0.65rem; letter-spacing:0.1em; color:var(--chalk-dim);">
+        pwambalaba@gmail.com<br>
+        <span style="color:var(--chalk-dim); opacity:0.6;">Nairobi, Kenya</span>
+      </div>
+    </div>
+
+    <!-- RIGHT: Story + stats -->
+    <div style="background:var(--steel); padding:2.5rem 2rem; display:flex; flex-direction:column; gap:0;">
+
+      <!-- Stat row -->
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:rgba(200,168,75,0.08); margin-bottom:2rem;">
+        <div style="background:var(--pitch-deep); padding:1rem 0.75rem;">
+          <div style="font-family:var(--type-display); font-weight:900; font-size:2rem; color:var(--ember); line-height:1;">14</div>
+          <div style="font-family:var(--type-mono); font-size:0.58rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--chalk-dim); margin-top:0.3rem;">Years building</div>
+        </div>
+        <div style="background:var(--pitch-deep); padding:1rem 0.75rem;">
+          <div style="font-family:var(--type-display); font-weight:900; font-size:2rem; color:var(--ember); line-height:1;">3%</div>
+          <div style="font-family:var(--type-mono); font-size:0.58rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--chalk-dim); margin-top:0.3rem;">Dream VC acceptance</div>
+        </div>
+        <div style="background:var(--pitch-deep); padding:1rem 0.75rem;">
+          <div style="font-family:var(--type-display); font-weight:900; font-size:2rem; color:var(--ember); line-height:1;">$10M</div>
+          <div style="font-family:var(--type-mono); font-size:0.58rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--chalk-dim); margin-top:0.3rem;">Fund thesis written</div>
+        </div>
+        <div style="background:var(--pitch-deep); padding:1rem 0.75rem;">
+          <div style="font-family:var(--type-display); font-weight:900; font-size:2rem; color:var(--ember); line-height:1;">3.89</div>
+          <div style="font-family:var(--type-mono); font-size:0.58rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--chalk-dim); margin-top:0.3rem;">GPA — Finance, USIU-A</div>
+        </div>
+      </div>
+
+      <!-- Narrative -->
+      <p style="font-size:0.875rem; color:var(--chalk-dim); line-height:1.8; font-weight:300; margin-bottom:1.25rem;">
+        Brombo (The Boy) began in talent management in 2011, spending six years building the commercial infrastructure of an independent music enterprise — learning IP rights, deal coordination, and the business structures of creative commercialisation from the ground up. That foundation directly informs everything the FRP is designed to do for football players.
+      </p>
+      <p style="font-size:0.875rem; color:var(--chalk-dim); line-height:1.8; font-weight:300; margin-bottom:1.25rem;">
+        He moved through banking — Custody and Investments at I&amp;M Bank — developing rigorous financial analysis and client-facing deal management skills before founding Chendeleza Africa in 2022. Since then: institutional partnerships with La Liga, UN Football for the Goals, and The Football Foundation for Africa. A central role in the inaugural Africa Football Business Summit. Selection into Dream VC (3% acceptance rate) where he developed a $10 million New Media Fund investment thesis. Selection into the Jasiri Fellowship for pan-African innovation leadership.
+      </p>
+      <p style="font-size:0.875rem; color:var(--chalk-dim); line-height:1.8; font-weight:300;">
+        Through Palilia Lab, his creative studio, Brombo (The Boy) has built and shipped prototype web products, published five books under the pen name Wanami Beyene, produced daily news programming, and built AKAI FC and The AKAI Institute as original IP from scratch. The demos you've seen — Index Athlete, Isikuti Soka, AKAI FC — are Palilia Lab products. They exist because Brombo (The Boy) builds in public before he pitches.
+      </p>
+    </div>
+  </div>
+
+  <!-- JOURNEY TIMELINE -->
+  <div style="margin-bottom:3rem;">
+    <div style="font-family:var(--type-mono); font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:1.5rem;">The 14-Year Build</div>
+    <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:1px; background:rgba(200,168,75,0.08); border:1px solid rgba(200,168,75,0.08);">
+
+      <div style="background:var(--pitch-mid); padding:1.25rem 1rem;">
+        <div style="font-family:var(--type-mono); font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--ember); margin-bottom:0.4rem;">2011–2017</div>
+        <div style="font-family:var(--type-display); font-weight:700; font-size:0.95rem; text-transform:uppercase; color:var(--chalk); margin-bottom:0.4rem; line-height:1.1;">Talent &amp; IP</div>
+        <div style="font-size:0.78rem; color:var(--chalk-dim); line-height:1.6; font-weight:300;">Lifetime Music Production. Six years managing artists, coordinating production, and building the commercial infrastructure of an independent music enterprise.</div>
+      </div>
+
+      <div style="background:var(--pitch-mid); padding:1.25rem 1rem;">
+        <div style="font-family:var(--type-mono); font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--ember); margin-bottom:0.4rem;">2017–2019</div>
+        <div style="font-family:var(--type-display); font-weight:700; font-size:0.95rem; text-transform:uppercase; color:var(--chalk); margin-bottom:0.4rem; line-height:1.1;">Media &amp; Editorial</div>
+        <div style="font-size:0.78rem; color:var(--chalk-dim); line-height:1.6; font-weight:300;">FTC Online Radio / Mviringo Magazine. Editorial operations, digital distribution, and partnership management across East African media platforms.</div>
+      </div>
+
+      <div style="background:var(--pitch-mid); padding:1.25rem 1rem;">
+        <div style="font-family:var(--type-mono); font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--ember); margin-bottom:0.4rem;">2019–2021</div>
+        <div style="font-family:var(--type-display); font-weight:700; font-size:0.95rem; text-transform:uppercase; color:var(--chalk); margin-bottom:0.4rem; line-height:1.1;">Finance &amp; Banking</div>
+        <div style="font-size:0.78rem; color:var(--chalk-dim); line-height:1.6; font-weight:300;">I&amp;M Bank. Custody and investments officer. Financial analysis, portfolio management, and deal structuring — the rigour that underpins the FRP's revenue architecture.</div>
+      </div>
+
+      <div style="background:var(--pitch-mid); padding:1.25rem 1rem;">
+        <div style="font-family:var(--type-mono); font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--ember); margin-bottom:0.4rem;">2021–Present</div>
+        <div style="font-family:var(--type-display); font-weight:700; font-size:0.95rem; text-transform:uppercase; color:var(--chalk); margin-bottom:0.4rem; line-height:1.1;">Creative Lab</div>
+        <div style="font-size:0.78rem; color:var(--chalk-dim); line-height:1.6; font-weight:300;">Palilia Lab. AKAI FC. Isikuti Soka. Index Athlete. Five books. Daily news. Prototype web products. Building and shipping in public — turning ideas into investable assets.</div>
+      </div>
+
+      <div style="background:var(--pitch); padding:1.25rem 1rem; border:1px solid rgba(200,168,75,0.15);">
+        <div style="font-family:var(--type-mono); font-size:0.6rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--gold); margin-bottom:0.4rem;">2022–Present</div>
+        <div style="font-family:var(--type-display); font-weight:700; font-size:0.95rem; text-transform:uppercase; color:var(--chalk); margin-bottom:0.4rem; line-height:1.1;">Chendeleza Africa</div>
+        <div style="font-size:0.78rem; color:var(--chalk-dim); line-height:1.6; font-weight:300;">La Liga. UN Football for the Goals. Football Foundation for Africa. Africa Football Business Summit. Dream VC. Jasiri Fellowship. $10M fund thesis. The FRP.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- INSTITUTIONAL PARTNERSHIPS -->
+  <div style="font-family:var(--type-mono); font-size:0.65rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--gold); margin-bottom:1rem;">Signed Institutional Partnerships</div>
+  <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:rgba(200,168,75,0.08); border:1px solid rgba(200,168,75,0.08); margin-bottom:3rem;">
+
+    <div style="background:var(--pitch-mid); padding:1.5rem 1.25rem;">
+      <div style="font-family:var(--type-mono); font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--ember); margin-bottom:0.4rem;">Global Football IP</div>
+      <div style="font-family:var(--type-display); font-weight:900; font-size:1.2rem; text-transform:uppercase; color:var(--chalk); margin-bottom:0.5rem; line-height:1.1;">La Liga</div>
+      <p style="font-size:0.78rem; color:var(--chalk-dim); line-height:1.65; font-weight:300;">Signed and onboarded La Liga — global football's leading commercial IP holder — as a Chendeleza Africa partner. Complex multi-stakeholder negotiation across international and community counterparties. The La Liga Eldoret Cup is the operational output.</p>
+    </div>
+
+    <div style="background:var(--pitch-mid); padding:1.5rem 1.25rem;">
+      <div style="font-family:var(--type-mono); font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--ember); margin-bottom:0.4rem;">United Nations</div>
+      <div style="font-family:var(--type-display); font-weight:900; font-size:1.2rem; text-transform:uppercase; color:var(--chalk); margin-bottom:0.5rem; line-height:1.1;">Football for the Goals</div>
+      <p style="font-size:0.78rem; color:var(--chalk-dim); line-height:1.65; font-weight:300;">Partnership with UN Football for the Goals — the UN's global initiative using football to advance the SDGs. Positions the FRP within an international development framework with institutional credibility and reporting standards.</p>
+    </div>
+
+    <div style="background:var(--pitch-mid); padding:1.5rem 1.25rem;">
+      <div style="font-family:var(--type-mono); font-size:0.58rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--ember); margin-bottom:0.4rem;">Continental Development</div>
+      <div style="font-family:var(--type-display); font-weight:900; font-size:1.2rem; text-transform:uppercase; color:var(--chalk); margin-bottom:0.5rem; line-height:1.1;">Football Foundation for Africa</div>
+      <p style="font-size:0.78rem; color:var(--chalk-dim); line-height:1.65; font-weight:300;">Signed partnership with The Football Foundation for Africa — a continental body focused on grassroots development infrastructure. Direct alignment with the FRP's mandate and a warm introduction pathway to national associations across the continent.</p>
+    </div>
+  </div>
+
+  <!-- FELLOWSHIPS -->
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:1px; background:rgba(200,168,75,0.08); border:1px solid rgba(200,168,75,0.08);">
+
+    <div style="background:var(--steel); padding:2rem 1.75rem; display:grid; grid-template-columns:auto 1fr; gap:1.25rem; align-items:start;">
+      <div style="font-family:var(--type-display); font-weight:900; font-size:2.5rem; color:var(--ember); line-height:1; padding-top:2px;">3%</div>
+      <div>
+        <div style="font-family:var(--type-display); font-weight:700; font-size:1rem; text-transform:uppercase; color:var(--chalk); margin-bottom:0.3rem; letter-spacing:0.03em;">Dream VC — Launch Into VC Fellow</div>
+        <div style="font-family:var(--type-mono); font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold); margin-bottom:0.6rem;">2023 · Pan-African VC Programme</div>
+        <p style="font-size:0.8rem; color:var(--chalk-dim); line-height:1.65; font-weight:300;">Competitive pan-African venture capital training programme with a 3% acceptance rate. Brombo (The Boy) developed a $10 million New Media Fund investment thesis and built fluency in deal structuring, LP engagement, and portfolio analysis. He speaks the language of the investors the FRP needs to close.</p>
+      </div>
+    </div>
+
+    <div style="background:var(--steel); padding:2rem 1.75rem; display:grid; grid-template-columns:auto 1fr; gap:1.25rem; align-items:start;">
+      <div style="font-family:var(--type-display); font-weight:900; font-size:2.5rem; color:var(--gold); line-height:1; padding-top:2px;">↑</div>
+      <div>
+        <div style="font-family:var(--type-display); font-weight:700; font-size:1rem; text-transform:uppercase; color:var(--chalk); margin-bottom:0.3rem; letter-spacing:0.03em;">Jasiri Fellow</div>
+        <div style="font-family:var(--type-mono); font-size:0.6rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--gold); margin-bottom:0.6rem;">2022 · Pan-African Innovation Leadership</div>
+        <p style="font-size:0.8rem; color:var(--chalk-dim); line-height:1.65; font-weight:300;">Pan-African entrepreneurship and leadership fellowship recognising high-potential innovators driving change across the continent. Selected the same year Chendeleza Africa was founded — validation that the mission and the person behind it are both credible at a continental level.</p>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<!-- INDEX ECOSYSTEM -->
+<section class="ecosystem-section section-full" id="ecosystem">
+  <div class="ecosystem-inner">
+
+    <span class="eyebrow">The Index Ecosystem</span>
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:4rem; align-items:end; margin-bottom:0;">
+      <div>
+        <h2 class="section-headline">Data Earned.<br>Opportunities<br><em>Transparent.</em></h2>
+      </div>
+      <div>
+        <p style="color:var(--chalk-dim); font-weight:300; font-size:0.9rem; line-height:1.8;">
+          The programme runs first. Players prove themselves through Isikuti Soka training, tournament play, and verified track work. What comes next is built on that foundation — a hardware and data ecosystem that makes exceptional performance visible, auditable, and rewarded. No opportunity in the Index is given. Every one is earned.
+        </p>
+      </div>
+    </div>
+
+    <!-- THREE PRODUCT CARDS -->
+    <div class="product-grid">
+
+      <!-- INDEX ATHLETE -->
+      <div class="product-card platform">
+        <span class="product-phase-tag tag-now">Live Now</span>
+        <span class="product-icon">📊</span>
+        <div class="product-name">Index Athlete</div>
+        <div class="product-sub">The Verified Player Record</div>
+        <p class="product-desc">
+          The foundation layer. Every player in the FRP has a digital Index — a verifiable, structured record of their football history, programme progress, track completion, and placement status. Built on coach verification, tournament records, and weekly session logs. Clubs, FAs, and employers query it. Players own it.
+        </p>
+        <ul class="product-specs">
+          <li>Verified tournament and academy history</li>
+          <li>Track progress documented weekly</li>
+          <li>Coach-signed session records</li>
+          <li>Placement-ready at graduation</li>
+          <li>FA and club access via annual licence</li>
+          <li>Player-controlled visibility settings</li>
+        </ul>
+      </div>
+
+      <!-- INDEX EYESIGHT -->
+      <div class="product-card eye">
+        <span class="product-phase-tag tag-next">Phase 03 Rollout</span>
+        <span class="product-icon">📷</span>
+        <div class="product-name">Index Eyesight</div>
+        <div class="product-sub">AI-Enabled Training Intelligence</div>
+        <p class="product-desc">
+          Fixed cameras installed in Isikuti Soka training facilities and partner grounds. AI-processed video generates automatic movement tracking, positional heat maps, and session metrics — without requiring a human analyst present. Data feeds directly into the player's Index. Nothing is manual. Everything is timestamped and auditable.
+        </p>
+        <ul class="product-specs">
+          <li>Fixed multi-angle cameras, no operator required</li>
+          <li>Automatic player tagging via biometric profile</li>
+          <li>Sprint distance, acceleration, work rate per session</li>
+          <li>Positional heat maps per player and team</li>
+          <li>Auto-push to Index Athlete record</li>
+          <li>Clip library for coach and player review</li>
+        </ul>
+      </div>
+
+      <!-- INDEX WATCHES -->
+      <div class="product-card watch">
+        <span class="product-phase-tag tag-future">Long Game</span>
+        <span class="product-icon">⌚</span>
+        <div class="product-name">Index Watches</div>
+        <div class="product-sub">Wearable Performance Hardware</div>
+        <p class="product-desc">
+          A wearable designed for East African training conditions and body types — measuring heart rate, recovery, sleep, physical exertion, and readiness. Not a consumer product adapted for sport. A tool built from FRP training data, for players who train in Nairobi's heat, Eldoret's altitude, Kisumu's humidity. Data from the watch syncs with Index Eyesight and feeds the player's full biometric profile.
+        </p>
+        <ul class="product-specs">
+          <li>Heart rate, HRV, and recovery scoring</li>
+          <li>Training load and readiness index per session</li>
+          <li>Sleep quality and rest period tracking</li>
+          <li>GPS movement in outdoor training environments</li>
+          <li>Syncs with Index Eyesight and Index Athlete</li>
+          <li>Designed and manufactured from FRP training data</li>
+        </ul>
+      </div>
+
+    </div><!-- /product-grid -->
+
+    <!-- DATA FLOW DIAGRAM -->
+    <div class="dataflow-section">
+      <span class="eyebrow" style="margin-bottom:0.5rem;">How the Data Flows</span>
+      <p style="color:var(--chalk-dim); font-weight:300; font-size:0.85rem; max-width:560px; line-height:1.7;">
+        Three input sources. One verified record. One transparent opportunity system. Every session adds to the player's permanent Index.
+      </p>
+      <div class="dataflow-diagram">
+        <div class="flow-nodes">
+
+          <div class="flow-node">
+            <span class="flow-node-icon">⌚</span>
+            <div class="flow-node-name" style="color:var(--gold);">Index Watch</div>
+            <div class="flow-node-sub">Biometric stream</div>
+          </div>
+
+          <div class="flow-arrow">
+            <div class="flow-arrow-row">
+              <div class="flow-arrow-line"></div>
+              <div class="flow-arrow-head">▶</div>
+            </div>
+            <div class="flow-arrow-label">HR · HRV · GPS · Load</div>
+          </div>
+
+          <div class="flow-node">
+            <span class="flow-node-icon">📷</span>
+            <div class="flow-node-name" style="color:var(--ember);">Index Eyesight</div>
+            <div class="flow-node-sub">Vision layer</div>
+          </div>
+
+          <div class="flow-arrow">
+            <div class="flow-arrow-row">
+              <div class="flow-arrow-line"></div>
+              <div class="flow-arrow-head">▶</div>
+            </div>
+            <div class="flow-arrow-label">Movement · Positioning</div>
+          </div>
+
+          <div class="flow-node">
+            <span class="flow-node-icon">🏟️</span>
+            <div class="flow-node-name" style="color:#62C49A;">Isikuti Soka</div>
+            <div class="flow-node-sub">Training ground</div>
+          </div>
+
+          <div class="flow-arrow">
+            <div class="flow-arrow-row">
+              <div class="flow-arrow-line"></div>
+              <div class="flow-arrow-head">▶</div>
+            </div>
+            <div class="flow-arrow-label">Coach sign-off · Sessions</div>
+          </div>
+
+          <div class="flow-node" style="background:rgba(1,51,34,0.5); border:1px solid rgba(200,168,75,0.2); border-radius:2px;">
+            <span class="flow-node-icon">📊</span>
+            <div class="flow-node-name" style="color:var(--chalk);">Index Athlete</div>
+            <div class="flow-node-sub">The verified record</div>
+          </div>
+
+          <div class="flow-arrow">
+            <div class="flow-arrow-row">
+              <div class="flow-arrow-line"></div>
+              <div class="flow-arrow-head">▶</div>
+            </div>
+            <div class="flow-arrow-label">Scored · Ranked · Earned</div>
+          </div>
+
+          <div class="flow-node" style="background:rgba(232,92,26,0.08); border:1px solid rgba(232,92,26,0.2); border-radius:2px;">
+            <span class="flow-node-icon">🔓</span>
+            <div class="flow-node-name" style="color:var(--ember);">Opportunities</div>
+            <div class="flow-node-sub">Unlocked transparently</div>
+          </div>
+
+        </div>
+      </div>
+    </div><!-- /dataflow -->
+
+    <!-- ISIKUTI SOKA CALLOUT -->
+    <div class="isikuti-callout">
+      <div>
+        <div class="isikuti-label">The Training Ground</div>
+        <div class="isikuti-name">Isikuti Soka</div>
+        <div class="isikuti-tagline">Train the Beat. Earn the Position.</div>
+      </div>
+      <div class="isikuti-body">
+        Isikuti Soka is the position-specific training club that forms the physical and tactical spine of the FRP. Five positions. Five training days. One rhythm. It is where Index Eyesight cameras are first deployed and where the training data that backs the Index record is generated. Every session at Isikuti Soka is a contribution to the player's permanent record — and eventually, to the dataset that designs Index Watches. The drum pattern moves the whole village at once. We train the same way.
+      </div>
+    </div>
+
+  </div><!-- /ecosystem-inner -->
+</section>
+
+<hr class="hr-gold">
+
+<!-- CTA -->
+<section class="cta-section section-full" id="join">
+  <div class="cta-inner">
+    <div>
+      <span class="eyebrow">Get Involved</span>
+      <h2 class="cta-headline">The Data<br>Doesn't Build<br><em>Itself.</em></h2>
+      <p class="cta-subtext">
+        Every day without a partner is a player record we didn't build. Every player record we didn't build is data we can't sell, a placement we can't make, a researcher we can't serve. The database is the business — and right now, we are building it. Come in early or come in later at a higher price.
+      </p>
+    </div>
+    <div class="cta-actions">
+      <a href="mailto:hello@chendeleza.com" class="btn-primary">Partner with us</a>
+      <a href="#phases" class="btn-ghost">Read the plan →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner" style="grid-template-columns: 1fr 1fr 1fr 1fr;">
+    <div>
+      <div class="footer-brand">Football Reclamation Project</div>
+      <p class="footer-tagline">A product of Chendeleza Africa, founded by Brombo (The Boy). Built to convert the talent the game leaves behind into the professionals the game desperately needs — and the data infrastructure to find the exceptional ones.</p>
+    </div>
+    <div>
+      <div class="footer-col-label">Programme</div>
+      <ul class="footer-links">
+        <li><a href="#about">The Problem</a></li>
+        <li><a href="#tracks">Career Tracks</a></li>
+        <li><a href="#phases">Delivery Phases</a></li>
+        <li><a href="#revenue">Revenue Model</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-label">Index Ecosystem</div>
+      <ul class="footer-links">
+        <li><a href="#ecosystem">Index Athlete</a></li>
+        <li><a href="#ecosystem">Index Eyesight</a></li>
+        <li><a href="#ecosystem">Index Watches</a></li>
+        <li><a href="#ecosystem">Isikuti Soka</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-label">Partners</div>
+      <ul class="footer-links">
+        <li><a href="#partners">Safaricom Foundation</a></li>
+        <li><a href="#partners">Football Kenya Federation</a></li>
+        <li><a href="#partners">CECAFA</a></li>
+        <li><a href="#partners">County Sports Boards</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2026 Brombo (The Boy) · Chendeleza Africa · The Football Reclamation Project · Nairobi, Kenya</div>
+    <div class="footer-copy">pwambalaba@gmail.com</div>
+  </div>
+</footer>
+
+<script>
+  const days = 1095;
+  const el = document.getElementById('age-counter');
+  let count = 0;
+  const step = Math.ceil(days / 60);
+  const timer = setInterval(() => {
+    count = Math.min(count + step, days);
+    el.textContent = count.toLocaleString();
+    if (count >= days) clearInterval(timer);
+  }, 20);
+
+  const rows = document.querySelectorAll('.track-row');
+  rows.forEach(row => {
+    row.addEventListener('click', () => {
+      const track = row.querySelector('.track-name').textContent;
+    });
+  });
+</script>
+
+</body>
+</html>
